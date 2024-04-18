@@ -9,7 +9,7 @@ use std::{fmt::Display, net::SocketAddr, str::FromStr, sync::Arc};
 use tracing::info;
 
 use jsonrpsee::{
-    core::{async_trait, server::rpc_module::Methods, Error},
+    core::{async_trait, server::Methods, Error},
     proc_macros::rpc,
     server::{ServerBuilder, ServerHandle},
 };
