@@ -10,8 +10,8 @@ use tracing::info;
 
 use jsonrpsee::{
     core::{async_trait, server::rpc_module::Methods, Error},
-    http_server::{HttpServerBuilder, HttpServerHandle},
     proc_macros::rpc,
+    server::{ServerBuilder, ServerHandle},
 };
 
 use crate::{errors::NodeError, node::Node};
@@ -24,7 +24,7 @@ use execution::types::CallOpts;
 
 pub struct Rpc<DB: Database> {
     node: Arc<Node<DB>>,
-    handle: Option<HttpServerHandle>,
+    handle: Option<ServerHandle>,
     address: SocketAddr,
 }
 
@@ -314,8 +314,8 @@ impl<DB: Database> NetRpcServer for RpcInner<DB> {
     }
 }
 
-async fn start<DB: Database>(rpc: RpcInner<DB>) -> Result<(HttpServerHandle, SocketAddr)> {
-    let server = HttpServerBuilder::default().build(rpc.address).await?;
+async fn start<DB: Database>(rpc: RpcInner<DB>) -> Result<(ServerHandle, SocketAddr)> {
+    let server = ServerBuilder::default().build(rpc.address).await?;
     let addr = server.local_addr()?;
 
     let mut methods = Methods::new();
